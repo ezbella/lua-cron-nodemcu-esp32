@@ -5,7 +5,6 @@ local function freeModule()
     module = nil
 end
 
--- module.test = {}
 local entries, cronTimer = {}, tmr.create()
 
 -- returns a list of all elements matching the entry
@@ -42,8 +41,6 @@ local function enumerate_entry(entry)
     return rv
 end
 
--- module.test.enumerate_entry = enumerate_entry
-
 local function expand_list(list)
     rv = {}
     for _, v in pairs(list) do
@@ -52,8 +49,6 @@ local function expand_list(list)
 
     return rv
 end
-
--- module.test.expand_list = expand_list
 
 -- `entry` is a table representing a cron entry using keys
 --
@@ -79,8 +74,6 @@ local function parse_cronentry(entry)
     return rv
 end
 
--- module.test.parse_cronentry = parse_cronentry
-
 -- `cronentry` is a cronentry as constructed by
 -- `parse_cronentry`; `date` is a date as constructed by
 local function match_cronentry_with_date(cronentry, calDate)
@@ -89,9 +82,7 @@ local function match_cronentry_with_date(cronentry, calDate)
     return not not rv
 end
 
--- module.test.match_cronentry_with_date = match_cronentry_with_date
 
---
 local function checkCronEntries()
     local datetime = time.epoch2cal(time.get())
     -- print(string.format("Current Time: %04d-%02d-%02d %02d:%02d:%02d DST:%d Weekday: %d", datetime["year"],
