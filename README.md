@@ -3,7 +3,7 @@ A simple and powerful cron module for nodemcu/esp32 based and inspired on www.gi
 At the moment there is no esp32 nodemcu official support for cron module, as it is for esp8266. For those who want to get a cron module up and running by simply adding the lua file to your project, without the need to compiling it in the firmware... you have it! <br/>
 The api is the same as in https://nodemcu.readthedocs.io/en/release/modules/cron/ <br/>
 
-<code>cron.schedule(entry) </code> <br/>
+<code>cron.schedule(entry, callback) </code> <br/>
 <code>cron.reset() </code> <br/>
 
 Cron masking is not currently supported. Instead, the cron entry format is the same as www.github.com/kedorlaomer/lua-cron, but including seconds part. <br/>
@@ -20,50 +20,34 @@ Cron masking is not currently supported. Instead, the cron entry format is the s
 * Nodemcu esp32 timer module -> https://nodemcu.readthedocs.io/en/dev-esp32/modules/tmr/
 
 ## Usage
-In this example we first set the esp32 internal time and register 2 jobs. Job1 dynamically registers another job which will reset any registered entries,
-and will reschedule another single job that will fire at a given time.
+In this example we first set the esp32 internal time and register 2 jobs. Job1 dynamically registers another job which will reset any registered entries, and will reschedule another single job that will fire at a given time.
 
 ```lua
 cron = require "cron"
 
 job1 = {
-
     hour = "10",
     minute = "14",
     day = "1,17",
     second = "0",
-    callback = function(entry, datetime)
-        print "Going to work..."
-        cron.schedule(job3)
-    end
 }
 
 job2 = {
     hour = "10-15",
     minute = "14,16",
     second = "0,30",
-    callback = function(entry, datetime)
-        print("Yoga classes at " .. string.format("%02d:%02d:%02d", datetime.hour, datetime.min, datetime.sec))
-    end
 }
 
 job3 = {
     hour = "10",
     minute = "15",
     second = "30",
-    callback = function(entry, datetime)
-        cron.reset()
-        cron.schedule(job4)
-    end
 }
 
 job4 = {
     hour = "10",
     minute = "17",
     second = "0",
-    callback = function(entry, datetime)
-        print("Build an efficient stove!")
-    end
 }
 
 calendar = {}
@@ -81,9 +65,20 @@ current = time.epoch2cal(time.get())
 print(string.format("Current Time: %04d-%02d-%02d %02d:%02d:%02d DST:%d", current["year"], current["mon"],
     current["day"], current["hour"], current["min"], current["sec"], current["dst"]))
 
-cron.schedule(job1)
-cron.schedule(job2)
+cron.schedule(job1, function(entry, datetime)
+    print "Going to work..."
+    cron.schedule(job3, function(entry, datetime)
+        print("Resetting entries and registering job4")
+        cron.reset()
+        cron.schedule(job4, function(entry, datetime)
+            print("Build an efficient stove!")
+        end)
+    end)
+end)
 
+cron.schedule(job2, function(entry, datetime)
+    print("Yoga classes at " .. string.format("%02d:%02d:%02d", datetime.hour, datetime.min, datetime.sec))
+end)
 ```
 
 ## Further info

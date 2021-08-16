@@ -98,7 +98,6 @@ local function checkCronEntries()
     --     datetime["mon"], datetime["day"], datetime["hour"], datetime["min"], datetime["sec"], datetime["dst"],
     --     datetime["wday"]))
     for i, v in pairs(entries) do
-        -- print("checking cron entry " .. i)
         if (match_cronentry_with_date(v, datetime)) then
             -- print("cron entry matched! -> " .. i)
             v.callback(v, datetime)
@@ -106,14 +105,15 @@ local function checkCronEntries()
     end
 end
 
-function M.schedule(entry)
+function M.schedule(entry, callback)
     if (#entries == 0) then
-        print("Starting timer!")
-        -- check cron entries every second
+        -- print("Starting timer!")
         cronTimer:unregister()
+        -- check cron entries every second
         cronTimer:register(1000, tmr.ALARM_AUTO, checkCronEntries)
         cronTimer:start()
     end
+    entry.callback = callback
     local parsedEntry = parse_cronentry(entry)
     table.insert(entries, parsedEntry)
 end
@@ -128,7 +128,6 @@ local function cron(entries, verbose)
     for i, v in pairs(entries) do
         extra[i] = {}
         extra[i].cronentry = parse_cronentry(v)
-        print("Parsing cron entry " .. i)
     end
 
 end
