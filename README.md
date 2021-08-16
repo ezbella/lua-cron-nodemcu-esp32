@@ -1,7 +1,7 @@
 # lua-cron-nodemcu-esp32
 A simple and powerful cron module for nodemcu/esp32 based and inspired on www.github.com/kedorlaomer/lua-cron <br/>
 At the moment there is no esp32 nodemcu official support for cron module, as it is for esp8266. For those who want to get a cron module up and running by simply adding the lua file to your project, without the need to compiling it in the firmware... you have it! <br/>
-The api is the same as in https://github.com/nodemcu/nodemcu-firmware/blob/release/app/modules/cron.c <br/>
+The api is the same as in https://nodemcu.readthedocs.io/en/release/modules/cron/ <br/>
 
 <code>cron.schedule(entry) </code> <br/>
 <code>cron.reset() </code> <br/>
