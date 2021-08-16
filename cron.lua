@@ -114,13 +114,4 @@ function M.reset()
     entries = {}
 end
 
-local function cron(entries, verbose)
-    local extra = {}
-    for i, v in pairs(entries) do
-        extra[i] = {}
-        extra[i].cronentry = parse_cronentry(v)
-    end
-
-end
-
 return M
