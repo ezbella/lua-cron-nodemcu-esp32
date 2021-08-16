@@ -8,7 +8,7 @@ The api is the same as in https://nodemcu.readthedocs.io/en/release/modules/cron
 
 Cron masking is not currently supported. Instead, the cron entry format is the same as www.github.com/kedorlaomer/lua-cron, but including seconds part. <br/>
 
-* <code>weekday</code> (0..6, Sunday is 0)
+* <code>weekday</code> (1..7, Sunday is 1)
 * <code>hour</code> (0..23)
 * <code>minute</code> (0..59)
 * <code>second</code> (0..59)
