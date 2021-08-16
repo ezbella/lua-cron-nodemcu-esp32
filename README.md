@@ -89,5 +89,5 @@ cron.schedule(job2)
 ## Further info
 You can find more info and tests of each of the internal functions on www.github.com/kedorlaomer/lua-cron. <br/>
 
-*Deep thanks to @kerdolaomer for the nice working code =)*
+*Deep thanks to @kedorlaomer for the nice working code =)*
 
